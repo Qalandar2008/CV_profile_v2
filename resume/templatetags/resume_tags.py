@@ -1,10 +1,54 @@
 from django import template
 from django.utils.translation import get_language
 
+from ..contact_links import (
+    ensure_url,
+    instagram_href,
+    instagram_label,
+    phone_tel_href,
+    telegram_href,
+    telegram_label,
+    whatsapp_href,
+)
 from ..i18n_field import localized_model_value
 from ..ui_strings import ui_text
 
 register = template.Library()
+
+
+@register.filter
+def contact_ensure_url(value):
+    return ensure_url(value)
+
+
+@register.filter
+def contact_telegram_url(value):
+    return telegram_href(value)
+
+
+@register.filter
+def contact_instagram_url(value):
+    return instagram_href(value)
+
+
+@register.filter
+def contact_whatsapp_url(value):
+    return whatsapp_href(value)
+
+
+@register.filter
+def contact_phone_tel(value):
+    return phone_tel_href(value)
+
+
+@register.filter
+def contact_telegram_label(value):
+    return telegram_label(value) or value or ""
+
+
+@register.filter
+def contact_instagram_label(value):
+    return instagram_label(value) or value or ""
 
 
 @register.simple_tag

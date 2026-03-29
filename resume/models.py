@@ -69,8 +69,8 @@ class ResumeProfile(models.Model):
     about_uz = models.TextField(blank=True, verbose_name=_("About (Uzbek)"))
     about_ru = models.TextField(blank=True, verbose_name=_("About (Russian)"))
 
-    email = models.EmailField(blank=True, verbose_name=_("Email"))
-    phone = models.CharField(max_length=64, blank=True, verbose_name=_("Phone"))
+    email = models.EmailField(blank=True, null=True, verbose_name=_("Email"))
+    phone = models.CharField(max_length=64, blank=True, null=True, verbose_name=_("Phone"))
     location_en = models.CharField(max_length=200, blank=True, verbose_name=_("Location (English)"))
     location_uz = models.CharField(max_length=200, blank=True, verbose_name=_("Location (Uzbek)"))
     location_ru = models.CharField(max_length=200, blank=True, verbose_name=_("Location (Russian)"))
@@ -79,9 +79,13 @@ class ResumeProfile(models.Model):
     skills_uz = models.TextField(blank=True, default="", verbose_name=_("Skills (Uzbek)"))
     skills_ru = models.TextField(blank=True, default="", verbose_name=_("Skills (Russian)"))
 
-    website = models.URLField(blank=True, verbose_name=_("Website"))
-    linkedin = models.URLField(blank=True, verbose_name=_("LinkedIn"))
-    github = models.URLField(blank=True, verbose_name=_("GitHub"))
+    telegram = models.CharField(max_length=200, blank=True, null=True, verbose_name=_("Telegram (username or link)"))
+    instagram = models.CharField(max_length=200, blank=True, null=True, verbose_name=_("Instagram (username or link)"))
+    whatsapp = models.CharField(max_length=64, blank=True, null=True, verbose_name=_("WhatsApp (phone number)"))
+
+    website = models.URLField(blank=True, null=True, verbose_name=_("Website"))
+    linkedin = models.URLField(blank=True, null=True, verbose_name=_("LinkedIn"))
+    github = models.URLField(blank=True, null=True, verbose_name=_("GitHub"))
 
     updated_at = models.DateTimeField(auto_now=True)
 

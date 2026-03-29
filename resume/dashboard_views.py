@@ -100,8 +100,12 @@ def dashboard_profile(request):
             "location": "Masalan: Toshkent, O‘zbekiston",
             "email": "you@example.com",
             "phone": "+998 90 123 45 67",
+            "telegram": "@username yoki https://t.me/username",
+            "instagram": "@username",
+            "whatsapp": "+998901234567",
             "linkedin": "https://linkedin.com/in/…",
             "github": "https://github.com/…",
+            "website": "https://…",
         },
     )
 

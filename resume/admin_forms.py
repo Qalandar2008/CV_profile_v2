@@ -17,8 +17,12 @@ class ResumeProfileForm(forms.ModelForm):
             "photo",
             "email",
             "phone",
+            "telegram",
+            "instagram",
+            "whatsapp",
             "linkedin",
             "github",
+            "website",
         )
         labels = {
             "full_name": _("Full name"),

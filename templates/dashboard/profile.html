@@ -25,8 +25,12 @@
     {% include "dashboard/includes/form_field.html" with field=form.photo %}
     {% include "dashboard/includes/form_field.html" with field=form.email %}
     {% include "dashboard/includes/form_field.html" with field=form.phone %}
+    {% include "dashboard/includes/form_field.html" with field=form.telegram %}
+    {% include "dashboard/includes/form_field.html" with field=form.instagram %}
+    {% include "dashboard/includes/form_field.html" with field=form.whatsapp %}
     {% include "dashboard/includes/form_field.html" with field=form.linkedin %}
     {% include "dashboard/includes/form_field.html" with field=form.github %}
+    {% include "dashboard/includes/form_field.html" with field=form.website %}
   </div>
 
   {% if form.non_field_errors %}
