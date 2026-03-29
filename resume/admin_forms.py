@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Certificate, Education, Interest, Portfolio, ResumeProfile, WorkExperience
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, WorkExperience
 from .translate_service import sync_translations_from_source
 
 
@@ -146,3 +146,14 @@ class EducationForm(forms.ModelForm):
         if commit:
             obj.save()
         return obj
+
+
+class ContactLinkForm(forms.ModelForm):
+    class Meta:
+        model = ContactLink
+        fields = ("name", "url", "icon", "sort_order")
+        labels = {
+            "name": _("Label"),
+            "url": _("URL"),
+            "icon": _("Icon"),
+        }

@@ -12,6 +12,7 @@ from .i18n_field import localized_model_value
 from .dashboard_i18n import get_dashboard_strings
 from .admin_forms import (
     CertificateForm,
+    ContactLinkForm,
     EducationForm,
     InterestForm,
     PortfolioForm,
@@ -20,7 +21,7 @@ from .admin_forms import (
 )
 from .dashboard_forms import SiteSettingsForm
 from .dashboard_style import apply_dashboard_field_styles, field_placeholder
-from .models import Certificate, Education, Interest, Portfolio, ResumeProfile, SiteSettings, WorkExperience
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, SiteSettings, WorkExperience
 
 
 def staff_required(view_func):
@@ -71,6 +72,7 @@ def dashboard_index(request):
             "experience_count": WorkExperience.objects.count(),
             "education_count": Education.objects.count(),
             "portfolio_count": Portfolio.objects.count(),
+            "contact_extra_count": ContactLink.objects.count(),
             "profile": profile,
         },
     )
@@ -326,6 +328,110 @@ def portfolio_delete(request, pk):
         "dashboard/portfolio/confirm_delete.html",
         {
             "section": "portfolio",
+            "object": obj,
+            "display_title": display_title,
+        },
+    )
+
+
+@staff_required
+def contact_link_list(request):
+    items = ContactLink.objects.all()
+    return render(
+        request,
+        "dashboard/contact_links/list.html",
+        {
+            "section": "contact_links",
+            "contact_link_items": items,
+        },
+    )
+
+
+@staff_required
+def contact_link_create(request):
+    obj = ContactLink()
+    if request.method == "POST":
+        form = ContactLinkForm(request.POST, instance=obj)
+        apply_dashboard_field_styles(form)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _dash_msg(request, "msg_contact_link_added"))
+            return redirect("dashboard:contact_links")
+    else:
+        form = ContactLinkForm(instance=obj)
+        apply_dashboard_field_styles(form)
+
+    field_placeholder(
+        form,
+        {
+            "name": "Discord, Behance, …",
+            "url": "https://discord.gg/… yoki mysite.com",
+            "sort_order": "0",
+        },
+    )
+
+    return render(
+        request,
+        "dashboard/contact_links/form.html",
+        {
+            "section": "contact_links",
+            "form": form,
+            "is_edit": False,
+        },
+    )
+
+
+@staff_required
+def contact_link_edit(request, pk):
+    obj = get_object_or_404(ContactLink, pk=pk)
+    if request.method == "POST":
+        form = ContactLinkForm(request.POST, instance=obj)
+        apply_dashboard_field_styles(form)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _dash_msg(request, "msg_saved"))
+            return redirect("dashboard:contact_links")
+    else:
+        form = ContactLinkForm(instance=obj)
+        apply_dashboard_field_styles(form)
+
+    field_placeholder(
+        form,
+        {
+            "name": "Platforma nomi",
+            "url": "https://",
+            "sort_order": "0",
+        },
+    )
+
+    return render(
+        request,
+        "dashboard/contact_links/form.html",
+        {
+            "section": "contact_links",
+            "form": form,
+            "is_edit": True,
+            "object": obj,
+        },
+    )
+
+
+@staff_required
+@require_http_methods(["GET", "POST"])
+def contact_link_delete(request, pk):
+    obj = get_object_or_404(ContactLink, pk=pk)
+    display_title = (obj.name or "").strip() or (obj.url or "").strip() or f"#{obj.pk}"
+
+    if request.method == "POST":
+        obj.delete()
+        messages.success(request, _dash_msg(request, "msg_deleted"))
+        return redirect("dashboard:contact_links")
+
+    return render(
+        request,
+        "dashboard/contact_links/confirm_delete.html",
+        {
+            "section": "contact_links",
             "object": obj,
             "display_title": display_title,
         },

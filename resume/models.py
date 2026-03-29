@@ -221,3 +221,36 @@ class Portfolio(models.Model):
         ordering = ["sort_order", "pk"]
         verbose_name = _("Portfolio item")
         verbose_name_plural = _("Portfolio")
+
+
+class ContactLinkIcon(models.TextChoices):
+    LINK = "link", _("Link (default)")
+    GLOBE = "globe", _("Globe / website")
+    CHAT = "chat", _("Chat / messenger")
+    USERS = "users", _("Community / team")
+    VIDEO = "video", _("Video / stream")
+    CODE = "code", _("Code / dev")
+    DEVICE = "device", _("Mobile app")
+    MUSICAL = "musical", _("Music / audio")
+    SPARKLES = "sparkles", _("Other highlights")
+    HASHTAG = "hashtag", _("Social / topics")
+
+
+class ContactLink(models.Model):
+    """Profildan keyin Contact bo‘limida ko‘rinadigan qo‘shimcha havolalar (Discord, custom sayt, …)."""
+
+    name = models.CharField(max_length=120, blank=True, null=True, verbose_name=_("Label (e.g. Discord)"))
+    url = models.CharField(max_length=500, blank=True, null=True, verbose_name=_("URL"))
+    icon = models.CharField(
+        max_length=32,
+        blank=True,
+        null=True,
+        choices=ContactLinkIcon.choices,
+        verbose_name=_("Icon (optional)"),
+    )
+    sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
+
+    class Meta:
+        ordering = ["sort_order", "pk"]
+        verbose_name = _("Extra contact link")
+        verbose_name_plural = _("Extra contact links")

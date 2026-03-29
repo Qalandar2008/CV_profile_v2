@@ -1,6 +1,8 @@
 from django import template
+from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
+from ..contact_dynamic_icons import svg_for_icon
 from ..contact_links import (
     ensure_url,
     instagram_href,
@@ -54,6 +56,11 @@ def contact_instagram_label(value):
 @register.simple_tag
 def uitext(key: str):
     return ui_text(key)
+
+
+@register.simple_tag
+def dynamic_contact_icon(icon_key=None):
+    return mark_safe(svg_for_icon(icon_key))
 
 
 @register.filter

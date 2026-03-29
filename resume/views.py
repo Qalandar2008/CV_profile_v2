@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import translation
 
-from .models import Certificate, Education, Interest, Portfolio, ResumeProfile, WorkExperience
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, WorkExperience
 from .pdf_export import build_cv_pdf_bytes
 
 
@@ -13,6 +13,7 @@ def cv_home(request):
     experiences = WorkExperience.objects.all()
     education_entries = Education.objects.all()
     portfolios = Portfolio.objects.all()
+    extra_contact_links = ContactLink.objects.all()
     return render(
         request,
         "resume/home.html",
@@ -23,6 +24,7 @@ def cv_home(request):
             "experiences": experiences,
             "education_entries": education_entries,
             "portfolios": portfolios,
+            "extra_contact_links": extra_contact_links,
         },
     )
 
