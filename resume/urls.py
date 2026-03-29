@@ -6,4 +6,5 @@ app_name = "resume"
 
 urlpatterns = [
     path("", views.cv_home, name="home"),
+    path("cv.pdf", views.cv_pdf, name="cv_pdf"),
 ]

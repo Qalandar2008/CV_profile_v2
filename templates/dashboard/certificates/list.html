@@ -1,4 +1,5 @@
 {% extends "dashboard/base.html" %}
+{% load resume_tags %}
 {% block title %}{{ dash.certificates }}{% endblock %}
 {% block mobile_title %}{{ dash.certificates }}{% endblock %}
 
@@ -30,7 +31,7 @@
         {% for c in certificates %}
         <tr class="transition hover:bg-slate-800/40">
           <td class="px-5 py-4 font-medium text-slate-200">
-            {% if list_lang == 'uz' %}{{ c.title_uz|default:c.title_en|default:"—"|truncatewords:12 }}{% elif list_lang == 'ru' %}{{ c.title_ru|default:c.title_en|default:"—"|truncatewords:12 }}{% else %}{{ c.title_en|default:"—"|truncatewords:12 }}{% endif %}
+            {% localized_field_lang c "title" list_lang as ct %}{{ ct|default:"—"|truncatewords:12 }}
           </td>
           <td class="px-5 py-4 text-slate-400">{% if c.issued_on %}{{ c.issued_on|date:"d.m.Y" }}{% else %}—{% endif %}</td>
           <td class="px-5 py-4 text-right text-slate-400">{{ c.sort_order }}</td>

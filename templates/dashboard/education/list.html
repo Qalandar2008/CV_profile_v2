@@ -1,4 +1,5 @@
 {% extends "dashboard/base.html" %}
+{% load resume_tags %}
 {% block title %}{{ dash.education }}{% endblock %}
 {% block mobile_title %}{{ dash.education }}{% endblock %}
 
@@ -30,16 +31,10 @@
         {% for row in items %}
         <tr class="transition hover:bg-slate-800/40">
           <td class="px-5 py-4 font-medium text-slate-200">
-            {% if list_lang == 'uz' %}
-              <span class="block">{{ row.degree_uz|default:row.degree_en|default:"—" }}</span>
-              <span class="text-xs text-slate-500">{{ row.institution_uz|default:row.institution_en }}</span>
-            {% elif list_lang == 'ru' %}
-              <span class="block">{{ row.degree_ru|default:row.degree_en|default:"—" }}</span>
-              <span class="text-xs text-slate-500">{{ row.institution_ru|default:row.institution_en }}</span>
-            {% else %}
-              <span class="block">{{ row.degree_en|default:"—" }}</span>
-              <span class="text-xs text-slate-500">{{ row.institution_en }}</span>
-            {% endif %}
+            {% localized_field_lang row "degree" list_lang as rdeg %}
+            {% localized_field_lang row "institution" list_lang as rins %}
+            <span class="block">{{ rdeg|default:"—" }}</span>
+            <span class="text-xs text-slate-500">{{ rins }}</span>
           </td>
           <td class="px-5 py-4 text-slate-400">
             {% if row.start_date %}{{ row.start_date|date:"m.Y" }}{% else %}—{% endif %} – {% if row.end_date %}{{ row.end_date|date:"m.Y" }}{% else %}—{% endif %}

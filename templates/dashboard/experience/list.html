@@ -1,4 +1,5 @@
 {% extends "dashboard/base.html" %}
+{% load resume_tags %}
 {% block title %}{{ dash.experience }}{% endblock %}
 {% block mobile_title %}{{ dash.experience }}{% endblock %}
 
@@ -30,16 +31,10 @@
         {% for row in items %}
         <tr class="transition hover:bg-slate-800/40">
           <td class="px-5 py-4 font-medium text-slate-200">
-            {% if list_lang == 'uz' %}
-              <span class="block">{{ row.role_uz|default:row.role_en|default:"—" }}</span>
-              <span class="text-xs text-slate-500">{{ row.company_uz|default:row.company_en }}</span>
-            {% elif list_lang == 'ru' %}
-              <span class="block">{{ row.role_ru|default:row.role_en|default:"—" }}</span>
-              <span class="text-xs text-slate-500">{{ row.company_ru|default:row.company_en }}</span>
-            {% else %}
-              <span class="block">{{ row.role_en|default:"—" }}</span>
-              <span class="text-xs text-slate-500">{{ row.company_en }}</span>
-            {% endif %}
+            {% localized_field_lang row "role" list_lang as rrole %}
+            {% localized_field_lang row "company" list_lang as rcomp %}
+            <span class="block">{{ rrole|default:"—" }}</span>
+            <span class="text-xs text-slate-500">{{ rcomp }}</span>
           </td>
           <td class="px-5 py-4 text-slate-400">
             {% if row.start_date %}{{ row.start_date|date:"m.Y" }}{% else %}—{% endif %}

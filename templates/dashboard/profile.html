@@ -5,21 +5,11 @@
 {% block content %}
 <div class="mb-8">
   <h1 class="text-2xl font-bold text-white">{{ dash.profile }}</h1>
-  <p class="mt-1 text-sm text-slate-400">{{ dash.content_language_hint }}</p>
+  <p class="mt-1 text-sm text-slate-400">{{ dash.source_field_hint }}</p>
 </div>
 
 <form method="post" enctype="multipart/form-data" class="space-y-6">
   {% csrf_token %}
-
-  <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80">
-    <h2 class="text-base font-semibold text-white">{{ dash.content_language }}</h2>
-    <p class="mt-1 text-xs text-slate-500">{{ dash.content_language_hint }}</p>
-    <div class="mt-4 flex flex-wrap gap-2">
-      <a href="?content_lang=en" class="inline-flex min-w-[4rem] items-center justify-center rounded-xl border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition {% if content_lang == 'en' %}border-primary bg-primary text-white{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-white{% endif %}">ENG</a>
-      <a href="?content_lang=uz" class="inline-flex min-w-[4rem] items-center justify-center rounded-xl border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition {% if content_lang == 'uz' %}border-primary bg-primary text-white{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-white{% endif %}">UZB</a>
-      <a href="?content_lang=ru" class="inline-flex min-w-[4rem] items-center justify-center rounded-xl border px-4 py-2 text-xs font-semibold uppercase tracking-wide transition {% if content_lang == 'ru' %}border-primary bg-primary text-white{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-white{% endif %}">RUS</a>
-    </div>
-  </div>
 
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80">
     <h2 class="mb-5 text-base font-semibold text-white">{{ dash.main_info }}</h2>
@@ -35,7 +25,6 @@
     {% include "dashboard/includes/form_field.html" with field=form.photo %}
     {% include "dashboard/includes/form_field.html" with field=form.email %}
     {% include "dashboard/includes/form_field.html" with field=form.phone %}
-    {% include "dashboard/includes/form_field.html" with field=form.website %}
     {% include "dashboard/includes/form_field.html" with field=form.linkedin %}
     {% include "dashboard/includes/form_field.html" with field=form.github %}
   </div>

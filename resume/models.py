@@ -45,6 +45,18 @@ class SiteSettings(models.Model):
 class ResumeProfile(models.Model):
     photo = models.ImageField(upload_to="profile/", blank=True, null=True, verbose_name=_("Photo"))
 
+    full_name = models.CharField(
+        max_length=200, blank=True, default="", verbose_name=_("Full name (source / default)")
+    )
+    headline = models.CharField(
+        max_length=300, blank=True, default="", verbose_name=_("Headline (source / default)")
+    )
+    about = models.TextField(blank=True, default="", verbose_name=_("About (source / default)"))
+    location = models.CharField(
+        max_length=200, blank=True, default="", verbose_name=_("Location (source / default)")
+    )
+    skills = models.TextField(blank=True, default="", verbose_name=_("Skills (source / default)"))
+
     full_name_en = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Full name (English)"))
     full_name_uz = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Full name (Uzbek)"))
     full_name_ru = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Full name (Russian)"))
@@ -91,6 +103,10 @@ class ResumeProfile(models.Model):
 
 
 class WorkExperience(models.Model):
+    company = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Company (source)"))
+    role = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Role (source)"))
+    description = models.TextField(blank=True, default="", verbose_name=_("Description (source)"))
+
     company_en = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Company (English)"))
     company_uz = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Company (Uzbek)"))
     company_ru = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Company (Russian)"))
@@ -116,6 +132,10 @@ class WorkExperience(models.Model):
 
 
 class Education(models.Model):
+    institution = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Institution (source)"))
+    degree = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Degree (source)"))
+    description = models.TextField(blank=True, default="", verbose_name=_("Description (source)"))
+
     institution_en = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Institution (English)"))
     institution_uz = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Institution (Uzbek)"))
     institution_ru = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Institution (Russian)"))
@@ -140,6 +160,10 @@ class Education(models.Model):
 
 
 class Certificate(models.Model):
+    title = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (source)"))
+    issuer = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Issuer (source)"))
+    description = models.TextField(blank=True, default="", verbose_name=_("Description (source)"))
+
     title_en = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (English)"))
     title_uz = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (Uzbek)"))
     title_ru = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (Russian)"))
@@ -164,6 +188,9 @@ class Certificate(models.Model):
 
 
 class Interest(models.Model):
+    label = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Interest (source)"))
+    detail = models.TextField(blank=True, default="", verbose_name=_("Detail (source)"))
+
     label_en = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Interest (English)"))
     label_uz = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Interest (Uzbek)"))
     label_ru = models.CharField(max_length=200, blank=True, default="", verbose_name=_("Interest (Russian)"))
@@ -178,3 +205,15 @@ class Interest(models.Model):
         ordering = ["sort_order", "pk"]
         verbose_name = _("Interest")
         verbose_name_plural = _("Interests")
+
+
+class Portfolio(models.Model):
+    title = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (optional)"))
+    url = models.URLField(verbose_name=_("Project URL"))
+    image = models.ImageField(upload_to="portfolio/", blank=True, null=True, verbose_name=_("Preview image"))
+    sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
+
+    class Meta:
+        ordering = ["sort_order", "pk"]
+        verbose_name = _("Portfolio item")
+        verbose_name_plural = _("Portfolio")
