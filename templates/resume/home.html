@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% load static resume_tags %}
+
+{% block head_css %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: { DEFAULT: '#6C5CE7', light: '#A29BFE', dark: '#5546d6' },
+          secondary: { DEFAULT: '#00CEC9', dark: '#00b8b3' },
+        },
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        boxShadow: {
+          soft: '0 18px 45px -15px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06)',
+          glow: '0 0 80px -20px rgba(108, 92, 231, 0.45)',
+        },
+        borderRadius: { xl: '12px', '2xl': '16px', '3xl': '24px' },
+      },
+    },
+  };
+</script>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .hero-gradient {
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(108, 92, 231, 0.35), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 0%, rgba(0, 206, 201, 0.12), transparent 50%);
+  }
+</style>
+{% endblock %}
+
+{% block body_class %}min-h-screen bg-[#0F172A] font-sans text-slate-200 antialiased selection:bg-primary/30 selection:text-white{% endblock %}
+
+{% block site_header %}
+<header class="sticky top-0 z-50 border-b border-white/5 bg-[#0F172A]/85 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
+    <a href="#" class="text-sm font-semibold tracking-tight text-white transition hover:text-primary-light">{% uitext "resume" %}</a>
+    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-400 lg:flex" aria-label="{% uitext 'nav_hero' %}">
+      <a href="#about" class="transition hover:text-white">{% uitext "nav_about" %}</a>
+      <a href="#experience" class="transition hover:text-white">{% uitext "nav_experience" %}</a>
+      <a href="#education" class="transition hover:text-white">{% uitext "nav_education" %}</a>
+      <a href="#certificates" class="transition hover:text-white">{% uitext "nav_certificates" %}</a>
+      <a href="#interests" class="transition hover:text-white">{% uitext "nav_interests" %}</a>
+      <a href="#contact" class="transition hover:text-secondary">{% uitext "nav_contact" %}</a>
+    </nav>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <nav class="flex rounded-xl border border-white/10 bg-[#111827]/90 p-1 shadow-soft" aria-label="{% uitext 'language' %}">
+        <form action="{% url 'set_language' %}" method="post" class="inline">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ switch_urls.en }}">
+          <button type="submit" name="language" value="en" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'en' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">ENG</button>
+        </form>
+        <form action="{% url 'set_language' %}" method="post" class="inline">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ switch_urls.uz }}">
+          <button type="submit" name="language" value="uz" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'uz' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">UZB</button>
+        </form>
+        <form action="{% url 'set_language' %}" method="post" class="inline">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ switch_urls.ru }}">
+          <button type="submit" name="language" value="ru" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'ru' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">RUS</button>
+        </form>
+      </nav>
+    </div>
+  </div>
+  <nav class="flex gap-3 overflow-x-auto border-t border-white/5 px-5 py-3 lg:hidden" aria-label="{% uitext 'nav_hero' %}">
+    <a href="#about" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_about" %}</a>
+    <a href="#experience" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_experience" %}</a>
+    <a href="#education" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_education" %}</a>
+    <a href="#certificates" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_certificates" %}</a>
+    <a href="#interests" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_interests" %}</a>
+    <a href="#contact" class="shrink-0 rounded-lg bg-secondary/15 px-3 py-1.5 text-xs font-medium text-secondary hover:bg-secondary/25">{% uitext "nav_contact" %}</a>
+  </nav>
+</header>
+{% endblock %}
+
+{% block main_class %}relative overflow-x-hidden{% endblock %}
+
+{% block content %}
+<div class="hero-gradient">
+  <section id="top" class="mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-8 sm:pb-28 sm:pt-16 lg:pt-20">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div class="order-2 lg:order-1">
+        <p class="mb-4 text-sm font-medium uppercase tracking-widest text-secondary">{% uitext "resume" %}</p>
+        <h1 class="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+          {% localized_field profile "full_name" %}
+        </h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-400 sm:text-xl">
+          {% localized_field profile "headline" %}
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
+            {% uitext "cta_resume" %}
+          </a>
+          {% if profile.github %}
+          <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-primary/40 hover:bg-white/[0.07]">GitHub</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="order-1 flex justify-center lg:order-2 lg:justify-end">
+        <div class="relative w-full max-w-md">
+          <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/25 via-transparent to-secondary/20 blur-2xl" aria-hidden="true"></div>
+          {% if profile.photo %}
+          {% localized_field profile "full_name" as hero_name %}
+          <img src="{{ profile.photo.url }}" alt="{{ hero_name }}" class="relative z-10 w-full max-h-[420px] rounded-3xl object-cover shadow-soft ring-1 ring-white/10" width="480" height="560">
+          {% else %}
+          {% localized_field profile "full_name" as fn %}
+          <div class="relative z-10 flex aspect-[4/5] max-h-[420px] w-full items-center justify-center rounded-3xl bg-[#111827] shadow-soft ring-1 ring-white/10">
+            <span class="text-6xl font-bold text-slate-700">{% if fn %}{{ fn|slice:":1"|upper }}{% else %}?{% endif %}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section id="about" class="scroll-mt-24 border-t border-white/5 bg-[#111827]/40 py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "nav_about" %}</h2>
+    <p class="mt-3 max-w-2xl text-3xl font-bold text-white sm:text-4xl">{% uitext "about_me" %}</p>
+    {% localized_field profile "about" as about_text %}
+    <div class="mt-8 max-w-3xl text-base leading-relaxed text-slate-400 sm:text-lg">
+      {% if about_text %}{{ about_text|linebreaksbr }}{% endif %}
+    </div>
+    {% localized_field profile "skills" as skills_raw %}
+    {% with tags=skills_raw|split_skill_tags %}
+    {% if tags %}
+    <div class="mt-10">
+      <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{% uitext "skills" %}</p>
+      <ul class="mt-4 flex flex-wrap gap-2">
+        {% for tag in tags %}
+        <li class="rounded-xl border border-white/10 bg-[#0F172A]/80 px-4 py-2 text-sm font-medium text-slate-200 shadow-sm transition hover:border-primary/35 hover:text-white">{{ tag }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+  </div>
+</section>
+
+{% if experiences %}
+<section id="experience" class="scroll-mt-24 py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "experience" %}</h2>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_experience" %}</p>
+    <div class="relative mt-12 space-y-6 before:absolute before:left-[11px] before:top-3 before:h-[calc(100%-24px)] before:w-px before:bg-gradient-to-b before:from-primary/50 before:to-secondary/30 sm:before:left-[15px]">
+      {% for job in experiences %}
+      <article class="group relative rounded-2xl border border-white/5 bg-[#111827]/60 p-6 pl-10 shadow-soft transition duration-300 hover:border-primary/25 hover:shadow-glow sm:pl-12">
+        <span class="absolute left-0 top-8 h-3 w-3 rounded-full border-2 border-[#0F172A] bg-primary shadow-[0_0_12px_rgba(108,92,231,0.8)] sm:top-9" aria-hidden="true"></span>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-white group-hover:text-primary-light transition">{% localized_field job "role" %}</h3>
+            <p class="text-secondary">{% localized_field job "company" %}</p>
+          </div>
+          <p class="shrink-0 text-sm text-slate-500">
+            {% if job.start_date %}{{ job.start_date|date:"M Y" }}{% endif %}
+            —
+            {% if job.is_current %}{% uitext "period_present" %}{% elif job.end_date %}{{ job.end_date|date:"M Y" }}{% else %}—{% endif %}
+          </p>
+        </div>
+        {% localized_field job "description" as jd %}
+        {% if jd %}
+        <p class="mt-4 text-sm leading-relaxed text-slate-400">{{ jd|linebreaksbr }}</p>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if education_entries %}
+<section id="education" class="scroll-mt-24 border-t border-white/5 bg-[#111827]/30 py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "education" %}</h2>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_education" %}</p>
+    <div class="mt-12 grid gap-6 sm:grid-cols-2">
+      {% for edu in education_entries %}
+      <article class="rounded-2xl border border-white/5 bg-[#0F172A]/80 p-6 shadow-soft transition duration-300 hover:border-secondary/30 hover:-translate-y-0.5">
+        <h3 class="text-lg font-semibold text-white">{% localized_field edu "degree" %}</h3>
+        <p class="mt-1 text-secondary">{% localized_field edu "institution" %}</p>
+        <p class="mt-3 text-xs text-slate-500">
+          {% if edu.start_date %}{{ edu.start_date|date:"Y" }}{% endif %} — {% if edu.end_date %}{{ edu.end_date|date:"Y" }}{% else %}…{% endif %}
+        </p>
+        {% localized_field edu "description" as ed %}
+        {% if ed %}
+        <p class="mt-4 text-sm leading-relaxed text-slate-400">{{ ed|linebreaksbr }}</p>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if certificates %}
+<section id="certificates" class="scroll-mt-24 py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "certificates" %}</h2>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_certificates" %}</p>
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% for cert in certificates %}
+      <article class="group flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-[#111827]/70 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-glow">
+        {% if cert.image %}
+        <div class="relative aspect-[16/10] overflow-hidden">
+          <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 to-transparent opacity-60" aria-hidden="true"></div>
+        </div>
+        {% endif %}
+        <div class="flex flex-1 flex-col p-6">
+          <h3 class="text-lg font-semibold text-white group-hover:text-primary-light transition">{% localized_field cert "title" %}</h3>
+          {% localized_field cert "issuer" as issuer %}
+          {% if issuer %}<p class="mt-1 text-sm text-secondary">{{ issuer }}</p>{% endif %}
+          {% if cert.issued_on %}<p class="mt-2 text-xs text-slate-500">{{ cert.issued_on|date:"SHORT_DATE_FORMAT" }}</p>{% endif %}
+          {% localized_field cert "description" as cdesc %}
+          {% if cdesc %}<p class="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{{ cdesc|truncatewords:40 }}</p>{% endif %}
+          {% if cert.document %}
+          <a href="{{ cert.document.url }}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-medium text-secondary hover:underline">{% uitext "view_document" %} →</a>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if interests %}
+<section id="interests" class="scroll-mt-24 border-t border-white/5 bg-[#111827]/25 py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "interests" %}</h2>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_interests" %}</p>
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2">
+      {% for item in interests %}
+      <li class="rounded-2xl border border-white/5 bg-[#0F172A]/70 p-6 shadow-soft transition hover:border-white/10 hover:bg-[#111827]/90">
+        <span class="font-semibold text-white">{% localized_field item "label" %}</span>
+        {% localized_field item "detail" as det %}
+        {% if det %}<div class="mt-2 text-sm leading-relaxed text-slate-400">{{ det|linebreaksbr }}</div>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+<section id="contact" class="scroll-mt-24 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#111827] to-[#0F172A] p-10 shadow-soft sm:p-14">
+      <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-secondary/15 blur-3xl" aria-hidden="true"></div>
+      <div class="relative">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "contact" %}</h2>
+        <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "get_in_touch" %}</p>
+        <p class="mt-4 max-w-xl text-slate-400">{% uitext "contact_lead" %}</p>
+        <ul class="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+          {% if profile.email %}
+          <li>
+            <a href="mailto:{{ profile.email }}" class="inline-flex rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:border-primary/40 hover:bg-primary/10">{{ profile.email }}</a>
+          </li>
+          {% endif %}
+          {% if profile.phone %}
+          <li>
+            <a href="tel:{{ profile.phone }}" class="inline-flex rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:border-secondary/40 hover:bg-secondary/10">{{ profile.phone }}</a>
+          </li>
+          {% endif %}
+          {% if profile.linkedin %}
+          <li>
+            <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="inline-flex rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:border-primary/40">LinkedIn</a>
+          </li>
+          {% endif %}
+        </ul>
+        {% localized_field profile "location" as loc %}
+        {% if loc %}
+        <p class="mt-8 flex items-center gap-2 text-sm text-slate-500">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden="true"></span>
+          {{ loc }}
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block site_footer %}
+<footer class="border-t border-white/5 bg-[#111827]/50 py-10">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 text-center text-sm text-slate-500 sm:flex-row sm:text-left sm:px-8">
+    <p>{% uitext "built_with_django" %}</p>
+    <a href="#top" class="text-slate-400 transition hover:text-primary-light">↑ {% uitext "nav_hero" %}</a>
+  </div>
+</footer>
+{% endblock %}
