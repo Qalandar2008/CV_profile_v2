@@ -88,12 +88,18 @@
     <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
       <div class="order-2 lg:order-1">
         <p class="mb-4 text-sm font-medium uppercase tracking-widest text-secondary">{% uitext "resume" %}</p>
+        {% localized_field profile "full_name" as hero_full_name %}
+        {% if hero_full_name %}
         <h1 class="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-          {% localized_field profile "full_name" %}
+          {{ hero_full_name }}
         </h1>
+        {% endif %}
+        {% localized_field profile "headline" as hero_headline %}
+        {% if hero_headline %}
         <p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-400 sm:text-xl">
-          {% localized_field profile "headline" %}
+          {{ hero_headline }}
         </p>
+        {% endif %}
         <div class="mt-10 flex flex-wrap gap-4">
           <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
             {% uitext "cta_resume" %}
