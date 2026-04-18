@@ -7,13 +7,14 @@ from .pdf_export import build_cv_pdf_bytes
 
 
 def cv_home(request):
-    profile = ResumeProfile.load()
-    certificates = Certificate.objects.all()
-    interests = Interest.objects.all()
-    experiences = WorkExperience.objects.all()
-    education_entries = Education.objects.all()
-    portfolios = Portfolio.objects.all()
-    extra_contact_links = ContactLink.objects.all()
+    # Har safar DB dan FRESH query -- hech qanday cache ishlatilmaydi
+    profile = ResumeProfile.objects.filter(pk=1).first()
+    certificates = Certificate.objects.all().order_by("sort_order", "pk")
+    interests = Interest.objects.all().order_by("sort_order", "pk")
+    experiences = WorkExperience.objects.all().order_by("sort_order", "-start_date", "pk")
+    education_entries = Education.objects.all().order_by("sort_order", "-start_date", "pk")
+    portfolios = Portfolio.objects.all().order_by("sort_order", "pk")
+    extra_contact_links = ContactLink.objects.all().order_by("sort_order", "pk")
     return render(
         request,
         "resume/home.html",
@@ -30,7 +31,7 @@ def cv_home(request):
 
 
 def cv_pdf(request):
-    """Joriy yoki ?lang= bo‘yicha til — PDF yuklash."""
+    """Joriy yoki ?lang= bo'yicha til — PDF yuklash."""
     lang = (request.GET.get("lang") or "")[:2]
     if lang not in ("en", "uz", "ru"):
         active = translation.get_language() or "en"
